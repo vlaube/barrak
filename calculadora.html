@@ -1,0 +1,121 @@
+<html>
+<head>
+  <title>Calculadora Balling - Barrak Advanced Dosing System</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    .container-fluid{
+      margin-top: 15px !important;
+    }
+    .bb1{
+      color: #FFF;
+      border: 1px solid #CCC;
+      width: 100%;
+      padding: 20px;
+    }
+    .a, .c{
+      height: 254px;
+    }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <h3 class="text-center">Calculadora Balling - Barrak Advanced Dosing System</h3>
+  <br>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-4 box">
+      <div class="bb1 text-center a" style="background:#115098;">
+        Qual o volume do seu sistema? (aqu&aacute;rio + sump)
+        <br><br><br><br>
+        <input type="number" min="0" step="1" class="form-control input-lg" id="volume"/>
+        <small>litros</small>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-4 box">
+      <div class="bb1 text-center b" style="background:#921819;">
+        Sabe o consumo di&aacute;rio de KH?
+        <br><br>
+        <div class="btn-group btn-group-lg" role="group" aria-label="Large button group">
+          <button type="button" id="sim" class="btn btn-secondary active">Sim</button>
+          <button type="button" id="nao" class="btn btn-secondary">N&atilde;o</button>
+        </div>
+        <br><br><br>
+        <span id="texto-diario">Qual seu consumo di&aacute;rio de KH?</span>
+        <span id="texto-aumetar" class="d-none">Quanto voc&ecirc; gostaria de aumentar o KH?</span>
+        <br>
+        <br>
+        <select class="form-control input-lg" id="diario"></select>
+        <select class="form-control input-lg d-none" id="aumentar"></select>
+        <small>dKH</small>
+        <br>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-4 box">
+      <div class="bb1 text-center c" style="background:#533c8b;">
+        Dose di&aacute;ria recomendada para cada parte
+        <br><br><br><br>
+        <span id="dose" class="h1"></span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<script language="javascript">
+  $( document ).ready(function() {
+
+    $(".a, .c").height($(".b").height());
+
+    function calcular(){
+
+      if($("#volume").val() == ""){
+        $("#volume").val(1);
+      }
+
+      fator = parseFloat($("#volume").val())*18/300;
+      if ($("#sim").hasClass("active") == true){
+        $("#dose").html((fator * parseFloat($("#diario").val())).toFixed(2) + " mL");
+      } else {
+        $("#dose").html((fator * parseFloat($("#aumentar").val())).toFixed(2) + " mL");
+      }
+    }
+
+    for (var i = 10; i <= 2000; i++) {
+      $("#volume").append('<option value='+ i +'>' + i + '</option>');
+    };
+    $("#volume").val(200);
+
+    for (var i = 1; i <= 500; i++) {
+      $("#diario").append('<option value='+ i/10 +'>' + i/10 + '</option>');
+      $("#aumentar").append('<option value='+ i/10 +'>' + i/10 + '</option>');
+    };
+    $("#aumentar").val(1);
+    $("#diario").val(0.7);
+
+    $("#sim").click(function() {
+      $(this).addClass("active");
+      $("#nao").removeClass("active");
+      $("#diario, #texto-diario").removeClass('d-none');
+      $("#aumentar, #texto-aumetar").addClass('d-none');
+      calcular();
+    });
+    $("#nao").click(function() {
+      $(this).addClass("active");
+      $("#sim").removeClass("active");
+      $("#diario, #texto-diario").addClass('d-none');
+      $("#aumentar, #texto-aumetar").removeClass('d-none');
+      calcular();
+    });
+
+    $("#volume, #diario, #aumentar").change(function(){
+      calcular();
+    });
+
+    calcular();
+  });
+</script>
